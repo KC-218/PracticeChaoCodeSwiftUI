@@ -39,6 +39,7 @@ struct ContentView: View {
                 Text(selectedFood == .none ? "告訴我" : "換一個").frame(width: 200)
             }
             .padding(.bottom, -15)
+            .transformEffect(.identity)
             
             Button {
                 selectedFood = .none
