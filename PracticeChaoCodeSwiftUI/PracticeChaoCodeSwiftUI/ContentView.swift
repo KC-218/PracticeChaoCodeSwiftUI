@@ -12,7 +12,8 @@ struct ContentView: View {
     let foodArray = Food.examples
     
     @State private var selectedFood: Food?
-    
+    @State private var isShowInfo: Bool = false
+
     var body: some View {
         
         VStack(spacing: 30) {
@@ -35,16 +36,59 @@ struct ContentView: View {
                 .bold()
             
             if selectedFood != .none {
-                Text(selectedFood!.name)
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundColor(.green)
-                    .id(selectedFood!.name)
-                    .transition(.asymmetric(
-                        insertion: .opacity.animation(.easeInOut(duration: 0.5).delay(0.2))
-                        , removal: .opacity.animation(.easeInOut(duration: 0.4))))
+                
+                VStack(spacing: 30) {
+                    
+                    HStack(spacing: 15) {
+                        Text(selectedFood!.name)
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundColor(.green)
+                        
+                        Button("", systemImage: "exclamationmark.circle.fill") {
+                            isShowInfo.toggle()
+                        }
+                        .buttonStyle(.borderless)
+                        .foregroundColor(Color.gray)
+                        
+                    }
+                    
+                        
+                    Text("熱量 \(String(Int(selectedFood!.calorie))) 大卡")
+           
+                    if isShowInfo {
+                        VStack {
+                            
+                            HStack(alignment: .center, spacing: 20) {
+                                Text("蛋白質")
+                                Text("脂肪")
+                                Text("碳水")
+                            }
+                            Divider()
+                            HStack(alignment: .center, spacing: 20) {
+                                Text("\(String(selectedFood!.carb)) g")
+                                Text("\(String(selectedFood!.fat)) g")
+                                Text("\(String(selectedFood!.protein)) g")
+                            }
+                            
+                        }
+                        .frame(width: 250, height: 120)
+                        .background(.white)
+                        .font(.title3)
+                        .cornerRadius(5)
+                        .animation(.easeInOut, value: isShowInfo)
+                        
+                    }
+                    
+                }
+                .id(selectedFood!.name)
+                .transition(.asymmetric(
+                    insertion: .opacity.animation(.easeInOut(duration: 0.5).delay(0.2))
+                    , removal: .opacity.animation(.easeInOut(duration: 0.4))))
+           
             }
             
+           
             Spacer()
             
             Button {
